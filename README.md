@@ -1,8 +1,72 @@
-# Welcome to your CDK TypeScript project!
+# 웹한글 기안기 API 학습 서비스
 
-This is a blank project for TypeScript development with CDK.
+# 요구사항
+1. Markdown으로 쉽게 매뉴얼 작성
+2. 각 단계에 WebIDE를 통해서 예제 코드 자동 입력 or 쉽게 입력
+3. 응답속도 500ms 이내
+4. 동시접속 최대 100명
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+# Architecture
+![Web Hwp Tutor Architecture](doc/architecture.jpg)
+
+# 개발 환경
+## AWS CLI
+### 설치
+-   Windows:  [MSI installer](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html)
+-   macOS:  [Bundled installer](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html)
+-   Linux:  [CLI install](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
+
+### AWS configure
+
+```
+$ aws configure
+AWS Access Key ID [None]: <key ID 입력>
+AWS Secret Access Key [None]: <access key 입력>
+Default region name [None]: <region 선택>
+Default output format [None]: <입력하지 않아도 됨.>
+```
+
+## Node.js 설치
+```
+$ sudo apt install nodejs npm
+```
+
+## CDK 설치
+```bash
+# 설치
+$ npm install -g aws-cdk
+
+# 버전 확인
+$ cdk --version
+1.118.0 (build a4f0418)
+
+# bootstrap
+$ cdk bootstrap aws://your-account/your-region
+```
+
+```
+$ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-ec2 @aws-cdk/aws-ecr @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns @aws-cdk/aws-elasticsearch @aws-cdk/aws-iam @aws-cdk/aws-lambda @aws-cdk/aws-s3
+```
+
+# 참고
+## CDK
+* https://docs.aws.amazon.com/cdk/index.html
+* https://cdkworkshop.com/
+* https://docs.aws.amazon.com/cdk/api/latest/docs/aws-construct-library.html
+* https://github.com/aws-samples/aws-cdk-examples
+
+### ECS
+* https://aws.amazon.com/ko/getting-started/hands-on/deploy-docker-containers/
+* https://docs.aws.amazon.com/AmazonECS/latest/developerguide/tutorial-ecs-web-server-cdk.html
+
+### EKS
+* https://cdk-eks-devops.workshop.aws/en/
+
+### Serverless Application(Lambda, API G/W, S3)
+* https://docs.aws.amazon.com/cdk/latest/guide/serverless_example.html
+
+### Cloud9
+* https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html
 
 ## Useful commands
 

@@ -86,40 +86,40 @@ export class WebHwpTutorStack extends cdk.Stack {
     });
 
     // TODO: lambda(nodejs) or tutor image 결정, ECR에 이미지 업로드
-    const tutor = new ecsp.ApplicationLoadBalancedFargateService(this, 'tutor', {
-      cluster,
-      taskImageOptions: {
-        image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'tutor'),
-      },
-      publicLoadBalancer: true
-    });
-    const manual = new ecsp.ApplicationLoadBalancedFargateService(this, 'manual', {
-      cluster,
-      taskImageOptions: {
-        image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'manual'),
-      },
-      publicLoadBalancer: true
-    });
-    const webIde = new ecsp.ApplicationLoadBalancedFargateService(this, 'web-ide', {
-      cluster,
-      taskImageOptions: {
-        image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'web-ide'),
-      },
-      publicLoadBalancer: true
-    });
-    const webHwp = new ecsp.ApplicationLoadBalancedFargateService(this, 'web-hwp', {
-      cluster,
-      taskImageOptions: {
-        image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'web-hwp'),
-      },
-      publicLoadBalancer: true
-    });
+    // const tutor = new ecsp.ApplicationLoadBalancedFargateService(this, 'tutor', {
+    //   cluster,
+    //   taskImageOptions: {
+    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'tutor'),
+    //   },
+    //   publicLoadBalancer: true
+    // });
+    // const manual = new ecsp.ApplicationLoadBalancedFargateService(this, 'manual', {
+    //   cluster,
+    //   taskImageOptions: {
+    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'manual'),
+    //   },
+    //   publicLoadBalancer: true
+    // });
+    // const webIde = new ecsp.ApplicationLoadBalancedFargateService(this, 'web-ide', {
+    //   cluster,
+    //   taskImageOptions: {
+    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'web-ide'),
+    //   },
+    //   publicLoadBalancer: true
+    // });
+    // const webHwp = new ecsp.ApplicationLoadBalancedFargateService(this, 'web-hwp', {
+    //   cluster,
+    //   taskImageOptions: {
+    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'web-hwp'),
+    //   },
+    //   publicLoadBalancer: true
+    // });
 
     // TODO: Elasticsearch 확인
-    const webHwpDomain = new es.Domain(this, 'Domain', {
-      version: es.ElasticsearchVersion.V7_10,
-      enableVersionUpgrade: true // defaults to false
-    });
+    // const webHwpDomain = new es.Domain(this, 'Domain', {
+    //   version: es.ElasticsearchVersion.V7_10,
+    //   enableVersionUpgrade: true // defaults to false
+    // });
 
     // TODO: Kibana 확인
 

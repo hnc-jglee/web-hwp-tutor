@@ -26,9 +26,13 @@ Default region name [None]: <region 선택>
 Default output format [None]: <입력하지 않아도 됨.>
 ```
 
+## NVM 설치
+```
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+```
 ## Node.js 설치
 ```
-$ sudo apt install nodejs npm
+$ nvm install node
 ```
 
 ## CDK 설치
@@ -45,7 +49,7 @@ $ cdk bootstrap aws://your-account/your-region
 ```
 
 ```
-$ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-ec2 @aws-cdk/aws-ecr @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns @aws-cdk/aws-elasticsearch @aws-cdk/aws-iam @aws-cdk/aws-lambda @aws-cdk/aws-s3
+$ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-core @aws-cdk/aws-ec2 @aws-cdk/aws-ecr @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns @aws-cdk/aws-elasticsearch @aws-cdk/aws-iam @aws-cdk/aws-lambda @aws-cdk/aws-s3
 ```
 
 # 참고

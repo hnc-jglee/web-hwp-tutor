@@ -16,30 +16,34 @@ export class WebHwpTutorStack extends cdk.Stack {
     // TODO: VPC 확인
     const vpc = new ec2.Vpc(this, 'web-hwp-vpc', {
       cidr: '10.170.0.0/17',
+      // maxAzs: 2,
       natGateways: 1,
-      subnetConfiguration: [
-        {
-          cidrMask: 23,         // TODO: cidr: 10.170.10.0/23
-          name: 'dmz',
-          subnetType: ec2.SubnetType.PUBLIC,
-        },
-        {
-          cidrMask: 23,         // TODO: cidr: 10.170.30.0/23
-          name: 'was',
-          subnetType: ec2.SubnetType.PRIVATE,
-        },
-        {
-          cidrMask: 23,         // TODO: cidr: 10.170.40.0/23
-          name: 'app',
-          subnetType: ec2.SubnetType.PRIVATE,
-        },
-        {
-          cidrMask: 23,         // TODO: cidr: 10.170.70.0/23
-          name: 'db',
-          subnetType: ec2.SubnetType.PRIVATE,
-        }
-      ]
+      // subnetConfiguration: [
+      //   {
+      //     cidrMask: 23,         // TODO: cidr: 10.170.10.0/23
+      //     name: 'dmz',
+      //     subnetType: ec2.SubnetType.PUBLIC,
+      //   },
+      //   {
+      //     cidrMask: 23,         // TODO: cidr: 10.170.30.0/23
+      //     name: 'was',
+      //     subnetType: ec2.SubnetType.PRIVATE,
+      //   },
+      //   {
+      //     cidrMask: 23,         // TODO: cidr: 10.170.40.0/23
+      //     name: 'app',
+      //     subnetType: ec2.SubnetType.PRIVATE,
+      //   },
+      //   {
+      //     cidrMask: 23,         // TODO: cidr: 10.170.70.0/23
+      //     name: 'db',
+      //     subnetType: ec2.SubnetType.PRIVATE,
+      //   }
+      // ]
     });
+    const dmzSubnet = vpc.publicSubnets[0].node.defaultChild as ec2.CfnSubnet;
+    dmzSubnet.addPropertyOverride('name', 'dmz');
+    dmzSubnet.addPropertyOverride('CidrBlock', '10.170.10.0/23');
 
     // TODO: ECR 확인
     const ecrRepo = new ecr.Repository(this, 'web-hwp-ecr');

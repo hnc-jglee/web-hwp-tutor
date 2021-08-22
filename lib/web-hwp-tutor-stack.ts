@@ -14,9 +14,9 @@ export class WebHwpTutorStack extends cdk.Stack {
     super(scope, id, props);
 
     // TODO: VPC 확인
-    const vpc = new ec2.Vpc(this, 'web-hwp-vpc', {
+    const vpc = new ec2.Vpc(this, 'WebHwpVpc', {
       cidr: '10.170.0.0/17',
-      // maxAzs: 2,
+      maxAzs: 2,
       natGateways: 1,
       // subnetConfiguration: [
       //   {
@@ -41,15 +41,20 @@ export class WebHwpTutorStack extends cdk.Stack {
       //   }
       // ]
     });
-    const dmzSubnet = vpc.publicSubnets[0].node.defaultChild as ec2.CfnSubnet;
-    dmzSubnet.addPropertyOverride('name', 'dmz');
-    dmzSubnet.addPropertyOverride('CidrBlock', '10.170.10.0/23');
+    // const dmzSubnet = vpc.publicSubnets[0].node.defaultChild as ec2.CfnSubnet;
+    // dmzSubnet.addPropertyOverride('CidrBlock', '10.170.10.0/23');
+    // const wasSubnet = vpc.privateSubnets[0].node.defaultChild as ec2.CfnSubnet;
+    // wasSubnet.addPropertyOverride('CidrBlock', '10.170.30.0/23');
+    // const appSubnet = vpc.privateSubnets[1].node.defaultChild as ec2.CfnSubnet;
+    // appSubnet.addPropertyOverride('CidrBlock', '10.170.40.0/23');
+    // const dbSubnet = vpc.privateSubnets[2].node.defaultChild as ec2.CfnSubnet;
+    // dbSubnet.addPropertyOverride('CidrBlock', '10.170.70.0/23');
 
     // TODO: ECR 확인
-    const ecrRepo = new ecr.Repository(this, 'web-hwp-ecr');
+    const ecrRepo = new ecr.Repository(this, 'WebHwpEcr');
 
     // TODO: ECS 확인
-    const cluster = new ecs.Cluster(this, 'web-hwp-cluster', {
+    const cluster = new ecs.Cluster(this, 'WebHwpCluster', {
       vpc: vpc,
       capacity: {
         instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
@@ -57,8 +62,8 @@ export class WebHwpTutorStack extends cdk.Stack {
     });
 
     // TODO: lambda 확인
-    const bucket = new s3.Bucket(this, "web-hwp-bucket");
-    const handler = new lambda.Function(this, "web-hwp-lambda", {
+    const bucket = new s3.Bucket(this, "WebHwpBucket");
+    const handler = new lambda.Function(this, "WebHwpLambda", {
       runtime: lambda.Runtime.NODEJS_10_X,
       code: lambda.Code.fromAsset("src"),
       handler: "webhwp.main",
@@ -70,7 +75,7 @@ export class WebHwpTutorStack extends cdk.Stack {
     bucket.grantReadWrite(handler);
 
     // TODO: API G/W 확인
-    const api = new apigateway.RestApi(this, "web-hwp-api", {
+    const api = new apigateway.RestApi(this, "WebHwpApi", {
       restApiName: "Web Hwp API",
     });
     const getMethodTest = new apigateway.LambdaIntegration(handler, {
@@ -79,13 +84,13 @@ export class WebHwpTutorStack extends cdk.Stack {
     api.root.addMethod("GET", getMethodTest);
 
     // TODO: Security Group, Role 확인
-    const securityGroup = new ec2.SecurityGroup(this, 'web-hwp-sg', {
+    const securityGroup = new ec2.SecurityGroup(this, 'WebHwpSg', {
       vpc,
       description: 'Web Hwp Security Group',
       allowAllOutbound: true
     });
     securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'Allow SSH Access');
-    const role = new iam.Role(this, 'web-hwp-role', {
+    const role = new iam.Role(this, 'WebHwpRole', {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
     });
 
@@ -104,17 +109,20 @@ export class WebHwpTutorStack extends cdk.Stack {
     //   },
     //   publicLoadBalancer: true
     // });
-    // const webIde = new ecsp.ApplicationLoadBalancedFargateService(this, 'web-ide', {
+    const webIde = new ecsp.ApplicationLoadBalancedFargateService(this, 'WebIde', {
+      cluster,
+      taskImageOptions: {
+        // image: ecs.ContainerImage.fromRegistry('eclipse/che'),
+        // image: ecs.ContainerImage.fromRegistry('codercom/code-server:3.11.1'),
+        image: ecs.ContainerImage.fromRegistry('theiaide/theia:1.16.0'),
+        containerPort: 3000
+      },
+      publicLoadBalancer: true
+    });
+    // const webHwp = new ecsp.ApplicationLoadBalancedFargateService(this, 'WebHwp', {
     //   cluster,
     //   taskImageOptions: {
-    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'web-ide'),
-    //   },
-    //   publicLoadBalancer: true
-    // });
-    // const webHwp = new ecsp.ApplicationLoadBalancedFargateService(this, 'web-hwp', {
-    //   cluster,
-    //   taskImageOptions: {
-    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'web-hwp'),
+    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'WebHwp'),
     //   },
     //   publicLoadBalancer: true
     // });

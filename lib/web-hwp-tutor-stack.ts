@@ -13,7 +13,6 @@ export class WebHwpTutorStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // TODO: VPC 확인
     const vpc = new ec2.Vpc(this, 'WebHwpVpc', {
       cidr: '10.170.0.0/17',
       maxAzs: 2,
@@ -41,6 +40,7 @@ export class WebHwpTutorStack extends cdk.Stack {
       //   }
       // ]
     });
+    // TODO: cdk deploy, cdk destroy 반복하면 가끔 conflict 발생한다. 일단 주석 처리
     // const dmzSubnet = vpc.publicSubnets[0].node.defaultChild as ec2.CfnSubnet;
     // dmzSubnet.addPropertyOverride('CidrBlock', '10.170.10.0/23');
     // const wasSubnet = vpc.privateSubnets[0].node.defaultChild as ec2.CfnSubnet;
@@ -50,10 +50,13 @@ export class WebHwpTutorStack extends cdk.Stack {
     // const dbSubnet = vpc.privateSubnets[2].node.defaultChild as ec2.CfnSubnet;
     // dbSubnet.addPropertyOverride('CidrBlock', '10.170.70.0/23');
 
-    // TODO: ECR 확인
-    const ecrRepo = new ecr.Repository(this, 'WebHwpEcr');
+    let ecrRepo = ecr.Repository.fromRepositoryName(this, 'WebHwpEcr', "webhwpctrl");
+    if (!ecrRepo) {
+      ecrRepo = new ecr.Repository(this, 'WebHwpEcr', {
+        repositoryName: "webhwpctrl",
+      });
+    }
 
-    // TODO: ECS 확인
     const cluster = new ecs.Cluster(this, 'WebHwpCluster', {
       vpc: vpc,
       capacity: {
@@ -62,7 +65,9 @@ export class WebHwpTutorStack extends cdk.Stack {
     });
 
     // TODO: lambda 확인
-    const bucket = new s3.Bucket(this, "WebHwpBucket");
+    const bucket = new s3.Bucket(this, "WebHwpBucket", {
+      bucketName: "webhwpctrl"
+    });
     const handler = new lambda.Function(this, "WebHwpLambda", {
       runtime: lambda.Runtime.NODEJS_10_X,
       code: lambda.Code.fromAsset("src"),
@@ -119,13 +124,14 @@ export class WebHwpTutorStack extends cdk.Stack {
       },
       publicLoadBalancer: true
     });
-    // const webHwp = new ecsp.ApplicationLoadBalancedFargateService(this, 'WebHwp', {
-    //   cluster,
-    //   taskImageOptions: {
-    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'WebHwp'),
-    //   },
-    //   publicLoadBalancer: true
-    // });
+    const webHwp = new ecsp.ApplicationLoadBalancedFargateService(this, 'WebHwp', {
+      cluster,
+      taskImageOptions: {
+        image: ecs.ContainerImage.fromEcrRepository(ecrRepo, '1629'),
+        containerPort: 8080
+      },
+      publicLoadBalancer: true
+    });
 
     // TODO: Elasticsearch 확인
     // const webHwpDomain = new es.Domain(this, 'Domain', {

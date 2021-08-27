@@ -17,28 +17,6 @@ export class WebHwpTutorStack extends cdk.Stack {
       cidr: '10.170.0.0/17',
       maxAzs: 2,
       natGateways: 1,
-      // subnetConfiguration: [
-      //   {
-      //     cidrMask: 23,         // TODO: cidr: 10.170.10.0/23
-      //     name: 'dmz',
-      //     subnetType: ec2.SubnetType.PUBLIC,
-      //   },
-      //   {
-      //     cidrMask: 23,         // TODO: cidr: 10.170.30.0/23
-      //     name: 'was',
-      //     subnetType: ec2.SubnetType.PRIVATE,
-      //   },
-      //   {
-      //     cidrMask: 23,         // TODO: cidr: 10.170.40.0/23
-      //     name: 'app',
-      //     subnetType: ec2.SubnetType.PRIVATE,
-      //   },
-      //   {
-      //     cidrMask: 23,         // TODO: cidr: 10.170.70.0/23
-      //     name: 'db',
-      //     subnetType: ec2.SubnetType.PRIVATE,
-      //   }
-      // ]
     });
     // TODO: cdk deploy, cdk destroy 반복하면 가끔 conflict 발생한다. 일단 주석 처리
     // const dmzSubnet = vpc.publicSubnets[0].node.defaultChild as ec2.CfnSubnet;

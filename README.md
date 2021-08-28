@@ -72,6 +72,9 @@ $ npm install
 ### React in AWS Lambda
 * https://aws.amazon.com/blogs/compute/building-server-side-rendering-for-react-in-aws-lambda/
 
+### Sample to deploy React SSR on Lambda
+* https://github.com/aws-samples/react-ssr-lambda
+
 ### Cloud9
 * https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html
 

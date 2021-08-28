@@ -49,7 +49,7 @@ $ cdk bootstrap aws://your-account/your-region
 ```
 
 ```
-$ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-core @aws-cdk/aws-ec2 @aws-cdk/aws-ecr @aws-cdk/aws-ecs @aws-cdk/aws-ecs-patterns @aws-cdk/aws-elasticsearch @aws-cdk/aws-iam @aws-cdk/aws-lambda @aws-cdk/aws-s3
+$ npm install
 ```
 
 # 참고
@@ -68,6 +68,9 @@ $ npm install @aws-cdk/aws-apigateway @aws-cdk/aws-core @aws-cdk/aws-ec2 @aws-cd
 
 ### Serverless Application(Lambda, API G/W, S3)
 * https://docs.aws.amazon.com/cdk/latest/guide/serverless_example.html
+
+### React in AWS Lambda
+* https://aws.amazon.com/blogs/compute/building-server-side-rendering-for-react-in-aws-lambda/
 
 ### Cloud9
 * https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-cdk.html

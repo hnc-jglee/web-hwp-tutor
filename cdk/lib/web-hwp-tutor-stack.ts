@@ -66,32 +66,6 @@ export class WebHwpTutorStack extends cdk.Stack {
     });
     api.root.addMethod("GET", getMethodTest);
 
-    // TODO: Security Group, Role 확인
-    const securityGroup = new ec2.SecurityGroup(this, 'WebHwpSg', {
-      vpc,
-      description: 'Web Hwp Security Group',
-      allowAllOutbound: true
-    });
-    securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'Allow SSH Access');
-    const role = new iam.Role(this, 'WebHwpRole', {
-      assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com')
-    });
-
-    // TODO: lambda(nodejs) or tutor image 결정, ECR에 이미지 업로드
-    // const tutor = new ecsp.ApplicationLoadBalancedFargateService(this, 'tutor', {
-    //   cluster,
-    //   taskImageOptions: {
-    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'tutor'),
-    //   },
-    //   publicLoadBalancer: true
-    // });
-    // const manual = new ecsp.ApplicationLoadBalancedFargateService(this, 'manual', {
-    //   cluster,
-    //   taskImageOptions: {
-    //     image: ecs.ContainerImage.fromEcrRepository(ecrRepo, 'manual'),
-    //   },
-    //   publicLoadBalancer: true
-    // });
     const webIde = new ecsp.ApplicationLoadBalancedFargateService(this, 'WebIde', {
       cluster,
       taskImageOptions: {

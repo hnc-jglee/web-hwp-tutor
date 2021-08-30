@@ -1,6 +1,21 @@
 # WebHwp Tutor App
 웹한글 기안기 튜토리얼 App
 
+## 빌드 빛 배포
+```
+$ npm install
+$ npm run build
+$ cd cdk
+$ npm install
+$ cdk bootstrap aws://<account-id>/<region>
+$ cdk deploy WebHwpTutorAppStack
+```
+
+## 로컬 실행
+```
+$ npm start
+```
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

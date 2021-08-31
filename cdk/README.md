@@ -52,6 +52,28 @@ $ cdk bootstrap aws://your-account/your-region
 $ npm install
 ```
 
+# TODO
+* 미작업 요구사항 구현
+* Markdown 매뉴얼 작성위한 Pipeline 서비스 추가
+* ECS에서 efsVolumeConfiguration Volume Attach 미지원
+https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ecs-readme.html
+https://github.com/aws/aws-cdk/issues/6918
+=> 아래 방법 적용
+```js
+task = FargateTaskDefinition(self, "Task",...);
+
+container = task.add_container("container", ...);
+
+container_volume_mount_point = ecs.MountPoint(
+    read_only=False,
+    container_path="/bitnami/wordpress",
+    source_volume=efs_volume.name
+);
+container.add_mount_points(container_volume_mount_point);
+```
+* Cross Domain 리소스 접근 이슈(웹한글 기안기 CORS Policy 수정?) 해결
+* SSR 구조 반영
+
 # 참고
 ## CDK
 * https://docs.aws.amazon.com/cdk/index.html

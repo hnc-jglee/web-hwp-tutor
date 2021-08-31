@@ -2,6 +2,8 @@
 
 웹한글 기안기 튜토리얼 App
 
+![Web Hwp Tutor](doc/webhwptutor.png)
+
 ## AWS에 배포
 ```
 $ npm install
